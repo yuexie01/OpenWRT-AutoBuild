@@ -1,0 +1,364 @@
+# 路由器固件通用插件 #
+
+#
+# Applications
+#
+# CONFIG_PACKAGE_luci-app-oled is not set
+# CONFIG_PACKAGE_luci-app-upnp is not set
+# CONFIG_PACKAGE_luci-app-usb-printer is not set
+
+CONFIG_PACKAGE_luci-app-adbyby-plus=y
+CONFIG_PACKAGE_luci-app-argon-config=y
+CONFIG_PACKAGE_luci-app-autoreboot=y
+CONFIG_PACKAGE_luci-app-mwan3=y
+CONFIG_PACKAGE_luci-app-passwall=y
+CONFIG_PACKAGE_luci-app-wifischedule=y
+CONFIG_PACKAGE_luci-app-wireguard=y
+
+
+# 路由器插件配置修改项 #
+
+#
+# Configuration
+#
+CONFIG_PACKAGE_libnghttp2=y
+CONFIG_PACKAGE_libuci-lua=y
+
+#
+# LuCI Configuration
+#
+# CONFIG_PACKAGE_luci-i18n-mwan3-ar is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-bg is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-bn is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-ca is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-cs is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-da is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-de is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-el is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-en is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-es is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-fi is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-fr is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-he is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-hi is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-hu is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-it is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-ja is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-ko is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-mr is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-ms is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-no is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-pl is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-pt is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-pt-br is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-ro is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-ru is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-sk is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-sv is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-tr is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-uk is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-vi is not set
+# CONFIG_PACKAGE_luci-i18n-mwan3-zh-tw is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-ar is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-bg is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-bn is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-ca is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-cs is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-da is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-de is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-el is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-en is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-es is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-fi is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-fr is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-he is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-hi is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-hu is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-it is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-ja is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-ko is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-mr is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-ms is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-no is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-pl is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-pt is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-pt-br is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-ro is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-ru is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-sk is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-sv is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-tr is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-uk is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-vi is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-yue is not set
+# CONFIG_PACKAGE_luci-i18n-wifischedule-zh-tw is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-ar is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-bg is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-bn is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-ca is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-cs is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-da is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-de is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-el is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-en is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-es is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-fi is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-fr is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-he is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-hi is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-hu is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-it is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-ja is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-ko is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-mr is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-ms is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-no is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-pl is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-pt is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-pt-br is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-ro is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-ru is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-sk is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-sv is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-tr is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-uk is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-vi is not set
+# CONFIG_PACKAGE_luci-i18n-wireguard-zh-tw is not set
+CONFIG_PACKAGE_luci-i18n-adbyby-plus-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-argon-config-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-autoreboot-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-passwall-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-wifischedule-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-wireguard-zh-cn=y
+
+#
+# 5. Protocols
+#
+CONFIG_PACKAGE_luci-proto-wireguard=y
+
+#
+# Cryptographic API modules
+#
+CONFIG_PACKAGE_kmod-crypto-lib-chacha20=y
+CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=y
+CONFIG_PACKAGE_kmod-crypto-lib-curve25519=y
+CONFIG_PACKAGE_kmod-crypto-lib-poly1305=y
+
+#
+# Network Support
+#
+CONFIG_PACKAGE_kmod-udptunnel4=y
+CONFIG_PACKAGE_kmod-udptunnel6=y
+CONFIG_PACKAGE_kmod-wireguard=y
+
+#
+# libimobiledevice
+#
+CONFIG_PACKAGE_libbpf=y
+CONFIG_PACKAGE_libcurl=y
+
+#
+# SSL support
+#
+# CONFIG_LIBCURL_MBEDTLS is not set
+# CONFIG_LIBCURL_WOLFSSL is not set
+CONFIG_LIBCURL_OPENSSL=y
+# CONFIG_LIBCURL_GNUTLS is not set
+# CONFIG_LIBCURL_NOSSL is not set
+
+#
+# Supported protocols
+#
+# CONFIG_LIBCURL_DICT is not set
+CONFIG_LIBCURL_FILE=y
+CONFIG_LIBCURL_FTP=y
+# CONFIG_LIBCURL_GOPHER is not set
+CONFIG_LIBCURL_HTTP=y
+CONFIG_LIBCURL_COOKIES=y
+# CONFIG_LIBCURL_IMAP is not set
+# CONFIG_LIBCURL_LDAP is not set
+# CONFIG_LIBCURL_POP3 is not set
+# CONFIG_LIBCURL_RTSP is not set
+# CONFIG_LIBCURL_SSH2 is not set
+# CONFIG_LIBCURL_SMB is not set
+# CONFIG_LIBCURL_SMTP is not set
+# CONFIG_LIBCURL_TELNET is not set
+CONFIG_LIBCURL_TFTP=y
+CONFIG_LIBCURL_NGHTTP2=y
+
+#
+# Miscellaneous
+#
+CONFIG_LIBCURL_PROXY=y
+CONFIG_LIBCURL_CRYPTO_AUTH=y
+CONFIG_LIBCURL_TLS_SRP=y
+# CONFIG_LIBCURL_LIBIDN2 is not set
+CONFIG_LIBCURL_THREADED_RESOLVER=y
+# CONFIG_LIBCURL_ZLIB is not set
+# CONFIG_LIBCURL_ZSTD is not set
+CONFIG_LIBCURL_UNIX_SOCKETS=y
+# CONFIG_LIBCURL_LIBCURL_OPTION is not set
+# CONFIG_LIBCURL_VERBOSE is not set
+# CONFIG_LIBCURL_NTLM is not set
+CONFIG_PACKAGE_libelf=y
+
+#
+# File Transfer
+#
+CONFIG_PACKAGE_curl=y
+
+#
+# IP Addresses and Names
+#
+CONFIG_PACKAGE_chinadns-ng=y
+CONFIG_PACKAGE_dns2socks=y
+CONFIG_PACKAGE_dns2tcp=y
+
+#
+# Routing and Redirection
+#
+CONFIG_PACKAGE_ip-full=y
+CONFIG_PACKAGE_mwan3=y
+
+
+#
+# VPN
+#
+CONFIG_PACKAGE_wireguard-tools=y
+
+#
+# Web Servers/Proxies
+#
+CONFIG_PACKAGE_microsocks=y
+
+#
+# Wireless
+#
+CONFIG_PACKAGE_wifischedule=y
+
+#
+# Network
+#
+CONFIG_PACKAGE_adbyby=y
+CONFIG_PACKAGE_ipt2socks=y
+CONFIG_PACKAGE_tcping=y
+
+# CONFIG_PACKAGE_wg-installer-server is not set
+
+#
+# Compression
+#
+CONFIG_PACKAGE_unzip=y
+
+#
+# Utilities
+#
+CONFIG_PACKAGE_coreutils=y
+CONFIG_PACKAGE_coreutils-base64=y
+CONFIG_PACKAGE_coreutils-nohup=y
+# CONFIG_PACKAGE_coreutils-b2sum is not set
+# CONFIG_PACKAGE_coreutils-base32 is not set
+# CONFIG_PACKAGE_coreutils-basename is not set
+# CONFIG_PACKAGE_coreutils-basenc is not set
+# CONFIG_PACKAGE_coreutils-cat is not set
+# CONFIG_PACKAGE_coreutils-chcon is not set
+# CONFIG_PACKAGE_coreutils-chgrp is not set
+# CONFIG_PACKAGE_coreutils-chmod is not set
+# CONFIG_PACKAGE_coreutils-chown is not set
+# CONFIG_PACKAGE_coreutils-chroot is not set
+# CONFIG_PACKAGE_coreutils-cksum is not set
+# CONFIG_PACKAGE_coreutils-comm is not set
+# CONFIG_PACKAGE_coreutils-cp is not set
+# CONFIG_PACKAGE_coreutils-csplit is not set
+# CONFIG_PACKAGE_coreutils-cut is not set
+# CONFIG_PACKAGE_coreutils-date is not set
+# CONFIG_PACKAGE_coreutils-dd is not set
+# CONFIG_PACKAGE_coreutils-df is not set
+# CONFIG_PACKAGE_coreutils-dir is not set
+# CONFIG_PACKAGE_coreutils-dircolors is not set
+# CONFIG_PACKAGE_coreutils-dirname is not set
+# CONFIG_PACKAGE_coreutils-du is not set
+# CONFIG_PACKAGE_coreutils-echo is not set
+# CONFIG_PACKAGE_coreutils-env is not set
+# CONFIG_PACKAGE_coreutils-expand is not set
+# CONFIG_PACKAGE_coreutils-expr is not set
+# CONFIG_PACKAGE_coreutils-factor is not set
+# CONFIG_PACKAGE_coreutils-false is not set
+# CONFIG_PACKAGE_coreutils-fmt is not set
+# CONFIG_PACKAGE_coreutils-fold is not set
+# CONFIG_PACKAGE_coreutils-groups is not set
+# CONFIG_PACKAGE_coreutils-head is not set
+# CONFIG_PACKAGE_coreutils-hostid is not set
+# CONFIG_PACKAGE_coreutils-id is not set
+# CONFIG_PACKAGE_coreutils-install is not set
+# CONFIG_PACKAGE_coreutils-join is not set
+# CONFIG_PACKAGE_coreutils-kill is not set
+# CONFIG_PACKAGE_coreutils-link is not set
+# CONFIG_PACKAGE_coreutils-ln is not set
+# CONFIG_PACKAGE_coreutils-logname is not set
+# CONFIG_PACKAGE_coreutils-ls is not set
+# CONFIG_PACKAGE_coreutils-md5sum is not set
+# CONFIG_PACKAGE_coreutils-mkdir is not set
+# CONFIG_PACKAGE_coreutils-mkfifo is not set
+# CONFIG_PACKAGE_coreutils-mknod is not set
+# CONFIG_PACKAGE_coreutils-mktemp is not set
+# CONFIG_PACKAGE_coreutils-mv is not set
+# CONFIG_PACKAGE_coreutils-nice is not set
+# CONFIG_PACKAGE_coreutils-nl is not set
+# CONFIG_PACKAGE_coreutils-nproc is not set
+# CONFIG_PACKAGE_coreutils-numfmt is not set
+# CONFIG_PACKAGE_coreutils-od is not set
+# CONFIG_PACKAGE_coreutils-paste is not set
+# CONFIG_PACKAGE_coreutils-pathchk is not set
+# CONFIG_PACKAGE_coreutils-pinky is not set
+# CONFIG_PACKAGE_coreutils-pr is not set
+# CONFIG_PACKAGE_coreutils-printenv is not set
+# CONFIG_PACKAGE_coreutils-printf is not set
+# CONFIG_PACKAGE_coreutils-ptx is not set
+# CONFIG_PACKAGE_coreutils-pwd is not set
+# CONFIG_PACKAGE_coreutils-readlink is not set
+# CONFIG_PACKAGE_coreutils-realpath is not set
+# CONFIG_PACKAGE_coreutils-rm is not set
+# CONFIG_PACKAGE_coreutils-rmdir is not set
+# CONFIG_PACKAGE_coreutils-runcon is not set
+# CONFIG_PACKAGE_coreutils-seq is not set
+# CONFIG_PACKAGE_coreutils-sha1sum is not set
+# CONFIG_PACKAGE_coreutils-sha224sum is not set
+# CONFIG_PACKAGE_coreutils-sha256sum is not set
+# CONFIG_PACKAGE_coreutils-sha384sum is not set
+# CONFIG_PACKAGE_coreutils-sha512sum is not set
+# CONFIG_PACKAGE_coreutils-shred is not set
+# CONFIG_PACKAGE_coreutils-shuf is not set
+# CONFIG_PACKAGE_coreutils-sleep is not set
+# CONFIG_PACKAGE_coreutils-sort is not set
+# CONFIG_PACKAGE_coreutils-split is not set
+# CONFIG_PACKAGE_coreutils-stat is not set
+# CONFIG_PACKAGE_coreutils-stdbuf is not set
+# CONFIG_PACKAGE_coreutils-stty is not set
+# CONFIG_PACKAGE_coreutils-sum is not set
+# CONFIG_PACKAGE_coreutils-sync is not set
+# CONFIG_PACKAGE_coreutils-tac is not set
+# CONFIG_PACKAGE_coreutils-tail is not set
+# CONFIG_PACKAGE_coreutils-tee is not set
+# CONFIG_PACKAGE_coreutils-test is not set
+# CONFIG_PACKAGE_coreutils-timeout is not set
+# CONFIG_PACKAGE_coreutils-touch is not set
+# CONFIG_PACKAGE_coreutils-tr is not set
+# CONFIG_PACKAGE_coreutils-true is not set
+# CONFIG_PACKAGE_coreutils-truncate is not set
+# CONFIG_PACKAGE_coreutils-tsort is not set
+# CONFIG_PACKAGE_coreutils-tty is not set
+# CONFIG_PACKAGE_coreutils-uname is not set
+# CONFIG_PACKAGE_coreutils-unexpand is not set
+# CONFIG_PACKAGE_coreutils-uniq is not set
+# CONFIG_PACKAGE_coreutils-unlink is not set
+# CONFIG_PACKAGE_coreutils-uptime is not set
+# CONFIG_PACKAGE_coreutils-users is not set
+# CONFIG_PACKAGE_coreutils-vdir is not set
+# CONFIG_PACKAGE_coreutils-wc is not set
+# CONFIG_PACKAGE_coreutils-who is not set
+# CONFIG_PACKAGE_coreutils-whoami is not set
+# CONFIG_PACKAGE_coreutils-yes is not set
+# CONFIG_PACKAGE_flent-tools is not set
+# CONFIG_PACKAGE_ykclient is not set
