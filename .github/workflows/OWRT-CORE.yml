@@ -1,0 +1,204 @@
+#云编译公用核心
+name: 云编译公用核心 (OWRT-CORE)
+
+on:
+  # 当工作流被调用时触发
+  workflow_call:
+    inputs:
+      # 必须输入的参数定义
+      OWRT_TARGET:
+        required: true
+        type: string  # 目标固件平台
+      OWRT_THEME:
+        required: true
+        type: string  # 固件主题
+      OWRT_NAME:
+        required: true
+        type: string  # 固件名称
+      OWRT_URL:
+        required: true
+        type: string  # OpenWrt源代码仓库URL
+      OWRT_PW:
+        required: true
+        type: string  # 设备登录密码
+      OWRT_IP:
+        required: true
+        type: string  # 设定的默认IP地址
+
+env:
+  # 使用GitHub Actions的内置秘钥以进行仓库交互
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  # 将输入参数赋值给环境变量以便后续步骤使用
+  OWRT_TARGET: ${{inputs.OWRT_TARGET}}
+  OWRT_THEME: ${{inputs.OWRT_THEME}}
+  OWRT_NAME: ${{inputs.OWRT_NAME}}
+  OWRT_URL: ${{inputs.OWRT_URL}}
+  OWRT_PW: ${{inputs.OWRT_PW}}
+  OWRT_IP: ${{inputs.OWRT_IP}}
+
+jobs:
+  owrt_core:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出当前仓库的代码到工作目录 （Checkout Projects)
+        uses: actions/checkout@main
+
+      - name: 初始化环境 （Initialization Environment)
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          # 清理Docker镜像和不再需要的软件包
+          docker rmi $(docker images -q)
+          sudo -E rm -rf $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "1{s/\r$//;p;q}")
+          # 更新软件包列表并升级系统
+          sudo -E apt -yqq update
+          sudo -E apt -yqq purge $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "2{s/\r$//;p;q}")
+          sudo -E apt -yqq full-upgrade
+          # 安装必需的软件包
+          sudo -E apt -yqq install $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "3{s/\r$//;p;q}")
+          # 清理无用的软件包和缓存
+          sudo -E apt -yqq autoremove --purge
+          sudo -E apt -yqq autoclean
+          sudo -E apt -yqq clean
+          # 重新加载系统服务配置并设置时区
+          sudo -E systemctl daemon-reload
+          sudo -E timedatectl set-timezone "Asia/Shanghai"
+
+      - name: 初始化变量 （Initialization Values)
+        run: |
+          # 设置环境变量，包括日期、源代码路径、固件类型等
+          export OWRT_DATE=$(TZ=UTC-8 date +"%y.%m.%d_%H.%M.%S")
+          export OWRT_SOURCE=$(echo $OWRT_URL | cut -d '/' -f 5-)
+          export OWRT_TYPE=$(sed -n "1{s/^#//;s/\r$//;p;q}" $GITHUB_WORKSPACE/Config/$OWRT_TARGET.txt)
+          # 将这些变量添加到环境变量中供后续步骤使用
+          echo "OWRT_SOURCE=$OWRT_SOURCE" >> $GITHUB_ENV
+          echo "OWRT_TARGET=$OWRT_TARGET" >> $GITHUB_ENV
+          echo "OWRT_DATE=$OWRT_DATE" >> $GITHUB_ENV
+          echo "OWRT_TYPE=$OWRT_TYPE" >> $GITHUB_ENV
+          echo "OWRT_PW=$OWRT_PW" >> $GITHUB_ENV
+          echo "OWRT_IP=$OWRT_IP" >> $GITHUB_ENV
+
+      - name: 初始化脚本 (Check Scripts)
+        run: |
+          # 切换到脚本目录并确保脚本兼容Unix格式和可执行权限
+          cd ./Scripts
+          dos2unix ./*.sh  # 转换脚本格式为Unix格式
+          chmod +x ./*.sh  # 添加执行权限
+
+      - name: 克隆源代码 (Clone OWRT Code)
+        run: |
+          # 克隆OpenWrt源代码仓库到本地目录owrt
+          git clone $OWRT_URL ./owrt
+
+      - name: 加载自定义feeds (Load custom feeds)
+        run: |
+          # 在OpenWrt源码目录中添加自定义feeds
+          cd ./owrt
+          # echo 'src-git smpackage https://github.com/kenzok8/small-package' >> feeds.conf.default
+
+      - name: 更新feeds (Update Feeds)
+        run: |
+          # 更新所有的feeds并安装它们
+          cd ./owrt
+          ./scripts/feeds update -a  # 更新feeds列表
+          ./scripts/feeds install -a  # 安装所有feeds
+
+      - name: 执行自定义脚本 (Custom Scripts)
+        run: |
+          # 执行自定义配置脚本
+          cd ./owrt
+          $GITHUB_WORKSPACE/Scripts/Settings.sh  # 应用通用设置
+          cd ./package
+          $GITHUB_WORKSPACE/Scripts/Plugins.sh  # 应用插件配置
+
+      - name: 执行自定义设置 (Custom Settings)
+        run: |
+          # 应用特定的配置并清理旧配置
+          cd ./owrt
+          rm -rf ./tmp* ./.config*  # 移除临时文件和旧配置
+          # 合并：合并通用配置和目标特定配置到新的.config文件
+          # cat $GITHUB_WORKSPACE/Config/$OWRT_TARGET.txt $GITHUB_WORKSPACE/Config/General.txt >> .config
+          # 复制：拷贝固件配置到新的.config文件
+          cp -rf $GITHUB_WORKSPACE/Config/$OWRT_TARGET.txt .config
+          $GITHUB_WORKSPACE/Scripts/Extras.sh  # 执行额外的配置脚本
+          make defconfig  # 生成默认配置文件
+
+      - name: 清理编译工具链产生的临时文件 (Cleanup Toolchain)
+        run: |
+          # 清理编译工具链产生的临时文件
+          cd ./owrt
+          make dirclean
+
+      - name: 下载所有需要的软件包 (Download Packages)
+        run: |
+          # 下载所有需要的软件包
+          cd ./owrt
+          make download -j$(nproc)  # 并发下载，处理器数量由nproc确定
+
+      - name: 编译固件 (Compile Firmware)
+        run: |
+          # 编译固件，首先尝试并行编译，失败则串行编译并开启详细输出
+          cd ./owrt
+          make -j$(nproc) || make -j1 V=s
+          # 显示磁盘使用情况和./bin目录文件信息
+          echo "===================磁盘使用情况==================="
+          df -h
+          echo "=============./bin/packages/*目录文件============="
+          ls -ahnlopR --color=auto ./bin/packages/*
+          echo "=============./bin/targets/*/*目录文件============="
+          ls -ahnlopR --color=auto ./bin/targets/*/*
+          echo "=================================================="
+
+      - name: 打包编译好的固件及相关文件 (Package Firmware)
+        run: |
+          # 打包编译好的固件及相关文件
+          cd ./owrt && mkdir -pv ./upload ./local-packages/usign-key
+          # 复制编译所用配置文件到 upload 目录
+          cp -rfv ./.config ./upload/Config_"$OWRT_TARGET"_"$OWRT_DATE".txt
+          # 复制 usign 密匙到 local-packages/usign-key 目录
+          cp -fv ./key-build* ./local-packages/usign-key
+          # 移动固件和固件信息文件到 upload 目录
+          mv -fv $(find ./bin/targets/ -maxdepth 3 -type f -iregex ".*\(bin\|json\|manifest\|buildinfo\|sha256sums\)$") ./upload/
+          # 移除 ./bin/targets/ 下多余文件
+          rm -fv $(find ./bin/targets/ -maxdepth 3 -type f ! -iregex ".*\(bin\|json\|manifest\|buildinfo\|sha256sums\)$")
+          # 移动软件包到 local-packages 目录
+          mv -fv ./bin/* ./local-packages/
+          # 压缩 local-packages 文件夹到 upload 目录
+          # tar -zcvf ./upload/local-packages.tar.gz ./local-packages
+          tar -cvf - ./local-packages | gzip -9 > ./upload/local-packages.tar.gz
+          # 执行脚本重命名文件
+          # cd ./upload
+          # $GITHUB_WORKSPACE/Scripts/Renames.sh
+
+      - name: 生成发行说明 (Generate Release Notes)
+        run: |
+          # 执行脚本生成 Release Notes
+          cd ./owrt
+          $GITHUB_WORKSPACE/Scripts/Generate-Notes.sh
+
+      - name: 发布编译好的固件 (Release Firmware)
+        uses: softprops/action-gh-release@master
+        with:
+          # 创建GitHub Release并上传固件
+          tag_name: ${{env.OWRT_TARGET}}_${{env.OWRT_SOURCE}}_${{env.OWRT_DATE}}
+          files: ./owrt/upload/*.*
+          body_path: ./owrt/release_notes.txt
+          body: |
+            源码：${{env.OWRT_SOURCE}}
+            设备：${{env.OWRT_TARGET}}
+            密码：${{env.OWRT_PW}}
+            地址：${{env.OWRT_IP}}
+
+      - name: 删除旧的Release (Delete Old Releases)
+        uses: dev-drprasad/delete-older-releases@master
+        with:
+          # 保留最近的6个Release，其余的自动删除
+          keep_latest: 6
+          delete_tags: true
+
+      - name: 删除旧的Workflow运行记录 (Delete Old Workflows)
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          # 删除所有旧的Workflow运行记录，但至少保留1次运行
+          retain_days: 0
+          keep_minimum_runs: 1
