@@ -22,7 +22,7 @@ VERSION_CODE=$(jq -r '.version_code' "$PROFILES_JSON")
 TARGET=$(jq -r '.target' "$PROFILES_JSON")
 DEVICE_VENDOR_MODEL=$(jq -r '.profiles | to_entries[] | .value.titles[] | .vendor + " " + .model' "$PROFILES_JSON")
 DEFAULT_PACKAGES=$(jq -r '.default_packages | join(", ")' "$PROFILES_JSON")
-IMAGES=($(jq -r '.profiles | to_entries[] | .value.images[] | .name + ": " + .sha256' "$PROFILES_JSON"))
+IMAGES=($(jq -r '.profiles | to_entries[] | .value.images[] | .name + ": --sha256" + .sha256' "$PROFILES_JSON"))
 
 # 输出 release 说明
 echo "Release 说明:"
