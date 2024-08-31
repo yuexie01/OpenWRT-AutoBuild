@@ -164,8 +164,10 @@ jobs:
           # 移动软件包到 local-packages 目录
           mv -fv ./bin/* ./local-packages/
           # 压缩 local-packages 文件夹到 upload 目录
+          echo "================打包local-packages================"
           # tar -zcvf ./upload/local-packages.tar.gz ./local-packages
           tar -cvf - ./local-packages | gzip -9 > ./upload/local-packages.tar.gz
+          echo "=================================================="
           # 执行脚本重命名文件
           # cd ./upload
           # $GITHUB_WORKSPACE/Scripts/Renames.sh
@@ -181,7 +183,7 @@ jobs:
         with:
           # 创建GitHub Release并上传固件
           tag_name: ${{env.OWRT_TARGET}}_${{env.OWRT_SOURCE}}_${{env.OWRT_DATE}}
-          files: ./owrt/upload/*.*
+          files: ./owrt/upload/*
           body_path: ./owrt/release_notes.txt
           body: |
             源码：${{env.OWRT_SOURCE}}
