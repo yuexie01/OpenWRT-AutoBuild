@@ -1,6 +1,7 @@
 # IMMORTALWRT-MT798X
 # 定制 RAX3000M-NAND-IMMORTALWRT-MT798X 配置文件，已添加需要的插件#
 
+#
 # Automatically generated file; DO NOT EDIT.
 # OpenWrt Configuration
 #
