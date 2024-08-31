@@ -94,7 +94,7 @@ jobs:
         run: |
           # 在OpenWrt源码目录中添加自定义feeds
           cd ./owrt
-          echo 'src-git smpackage https://github.com/kenzok8/small-package' >> feeds.conf.default
+          # echo 'src-git smpackage https://github.com/kenzok8/small-package' >> feeds.conf.default
 
       - name: 更新feeds (Update Feeds)
         run: |
