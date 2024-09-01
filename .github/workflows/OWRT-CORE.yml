@@ -141,23 +141,14 @@ jobs:
           # 编译固件，首先尝试并行编译，失败则串行编译并开启详细输出
           cd ./owrt
           make -j$(nproc) || make -j1 V=s
-          # 显示固件编译后的磁盘使用情况和固件目录文件信息
+          # 显示磁盘使用情况和./bin目录文件信息
           echo "===================磁盘使用情况==================="
           df -h
           echo "=============./bin/targets/*/*目录文件============="
           ls -ahnlopR --color=auto ./bin/targets/*/*
-          echo "=================================================="
-          
-      - name: 编译所有软件包 (Compile All IPKs)
-        run: |
-          # 编译所有软件包
-          cd ./owrt
-          make -j$(nproc) package/all || make -j1 package/all V=s
-          # 显示软件包编译后的磁盘使用情况和软件包目录文件信息
-          echo "===================磁盘使用情况==================="
-          df -h
           echo "=============./bin/packages/*目录文件============="
           ls -ahnlopR --color=auto ./bin/packages/*
+          echo "=================================================="
 
       - name: 打包编译好的固件及相关文件 (Package Firmware)
         run: |
