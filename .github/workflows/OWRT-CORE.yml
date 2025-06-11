@@ -38,7 +38,7 @@ env:
 
 jobs:
   owrt_core:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: 检出当前仓库的代码到工作目录 （Checkout Projects)
         uses: actions/checkout@main
@@ -47,33 +47,16 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
+          # 清理Docker镜像和不再需要的软件包
           # 清理Docker镜像（仅当存在镜像时执行）
           docker images -q | grep -q . && docker rmi $(docker images -q) || echo "没有Docker镜像可以清理"
-          # 删除指定路径下的文件/目录（来自Depends.txt第一行）
           sudo -E rm -rf $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "1{s/\r$//;p;q}")
           # 更新软件包列表并升级系统
           sudo -E apt -yqq update
-          # 获取第2行要删除的包列表，并过滤掉通配符和无效内容
-          PACKAGES_TO_PURGE=$(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "2{s/\r$//;p;q}" | tr ' ' '\n' | grep -v "\*" | xargs)
-          # 只在有包存在时执行purge
-          if [ -n "$PACKAGES_TO_PURGE" ]; then
-              echo "正在清理以下已知包：$PACKAGES_TO_PURGE"
-              sudo -E apt -yqq purge $PACKAGES_TO_PURGE || echo "某些包可能未安装，跳过..."
-          else
-              echo "没有有效的包需要清理"
-          fi
-          # 升级系统
+          sudo -E apt -yqq purge $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "2{s/\r$//;p;q}")
           sudo -E apt -yqq full-upgrade
-          # 添加 i386 架构支持（用于 libc6-i386）
-          sudo dpkg --add-architecture i386
-          # 安装依赖包（第3行）
-          RAW_PACKAGES=$(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "3{s/\r$//;p;q}")
-          PACKAGES_TO_INSTALL="$(echo $RAW_PACKAGES | tr ' ' '\n' | grep -v "ccache\|cmake\|device-tree-compiler\|antlr3\|asciidoc\|autopoint\|fastjar\|ecj\|mkisofs\|uglifyjs\|xmlto" | xargs)"
-          echo "正在安装以下依赖包："
-          echo "$PACKAGES_TO_INSTALL"
-          sudo -E apt -yqq install $PACKAGES_TO_INSTALL || echo "部分包安装失败，请检查输出日志"
-          # 安装 snap 提供的工具（如 ccache, cmake 等）
-          sudo snap install ccache cmake coreutils
+          # 安装必需的软件包
+          sudo -E apt -yqq install $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "3{s/\r$//;p;q}")
           # 清理无用的软件包和缓存
           sudo -E apt -yqq autoremove --purge
           sudo -E apt -yqq autoclean
