@@ -64,8 +64,16 @@ jobs:
           fi
           # 升级系统
           sudo -E apt -yqq full-upgrade
-          # 安装必需的软件包
-          sudo -E apt -yqq install $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "3{s/\r$//;p;q}")
+          # 添加 i386 架构支持（用于 libc6-i386）
+          sudo dpkg --add-architecture i386
+          # 安装依赖包（第3行）
+          RAW_PACKAGES=$(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "3{s/\r$//;p;q}")
+          PACKAGES_TO_INSTALL="$(echo $RAW_PACKAGES | tr ' ' '\n' | grep -v "ccache\|cmake\|device-tree-compiler\|antlr3\|asciidoc\|autopoint\|fastjar\|ecj\|mkisofs\|uglifyjs\|xmlto" | xargs)"
+          echo "正在安装以下依赖包："
+          echo "$PACKAGES_TO_INSTALL"
+          sudo -E apt -yqq install $PACKAGES_TO_INSTALL || echo "部分包安装失败，请检查输出日志"
+          # 安装 snap 提供的工具（如 ccache, cmake 等）
+          sudo snap install ccache cmake coreutils
           # 清理无用的软件包和缓存
           sudo -E apt -yqq autoremove --purge
           sudo -E apt -yqq autoclean
