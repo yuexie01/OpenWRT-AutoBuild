@@ -49,8 +49,8 @@ jobs:
         run: |
           # 清理Docker镜像和不再需要的软件包
           # 清理Docker镜像（仅当存在镜像时执行）
-          docker images -q | grep -q . && docker rmi $(docker images -q) || echo "没有Docker镜像可以清理"
-          sudo -E rm -rf $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "1{s/\r$//;p;q}")
+          # docker images -q | grep -q . && docker rmi $(docker images -q) || echo "没有Docker镜像可以清理"
+          # sudo -E rm -rf $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "1{s/\r$//;p;q}")
           # 更新软件包列表并升级系统
           sudo -E apt -yqq update
           sudo -E apt -yqq purge $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "2{s/\r$//;p;q}")
@@ -123,7 +123,7 @@ jobs:
           # 复制：拷贝固件配置到新的.config文件
           cp -rf $GITHUB_WORKSPACE/Config/$OWRT_TARGET.txt .config
           $GITHUB_WORKSPACE/Scripts/Extras.sh  # 执行额外的配置脚本
-          make defconfig  # 生成默认配置文件
+          # make defconfig  # 生成默认配置文件
 
       - name: 清理编译工具链产生的临时文件 (Cleanup Toolchain)
         run: |
